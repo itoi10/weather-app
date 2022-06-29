@@ -1,11 +1,65 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
-const Weather = ({ city_name, color_name }) => {
+export interface Weather {
+  coord: Coord;
+  weather?: (WeatherEntity)[] | null;
+  base: string;
+  main: Main;
+  visibility: number;
+  wind: Wind;
+  clouds: Clouds;
+  dt: number;
+  sys: Sys;
+  timezone: number;
+  id: number;
+  name: string;
+  cod: number;
+}
+export interface Coord {
+  lon: number;
+  lat: number;
+}
+export interface WeatherEntity {
+  id: number;
+  main: string;
+  description: string;
+  icon: string;
+}
+export interface Main {
+  temp: number;
+  feels_like: number;
+  temp_min: number;
+  temp_max: number;
+  pressure: number;
+  humidity: number;
+}
+export interface Wind {
+  speed: number;
+  deg: number;
+}
+export interface Clouds {
+  all: number;
+}
+export interface Sys {
+  type: number;
+  id: number;
+  message: number;
+  country: string;
+  sunrise: number;
+  sunset: number;
+}
+
+interface Props {
+  city_name: string;
+  color_name: string;
+}
+
+const Weather: React.FC<Props> = ({ city_name, color_name }) => {
   const WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
   const ICON_URL = "https://openweathermap.org/img/w";
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Weather>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,7 +75,7 @@ const Weather = ({ city_name, color_name }) => {
   }, [city_name]);
 
   // 読み込み中
-  if (loading) {
+  if (loading || !data || !data.weather) {
     return (
       <div className="w-96 h-56 flex justify-center items-center">
         <svg
@@ -73,7 +127,7 @@ const Weather = ({ city_name, color_name }) => {
             {/* 天気 */}
             <p className="font-light">天気</p>
             <p className="text-lg font-medium tracking-widest">
-              {data.weather[0].main}
+              {data.weather && data.weather[0].main}
             </p>
           </div>
           <div className="pt-6 pr-6">
@@ -82,7 +136,7 @@ const Weather = ({ city_name, color_name }) => {
               <div>
                 <p className="font-light text-xs">日付</p>
                 <p className="font-bold tracking-more-wider text-sm">
-                  {dayjs(data.ts).format("YYYY-MM-DD hh:mm")}
+                  {dayjs(data.dt).format("YYYY-MM-DD hh:mm")}
                 </p>
               </div>
               {/* 温度 */}

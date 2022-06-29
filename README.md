@@ -1,10 +1,12 @@
 # お天気アプリ
 
-Reactでお天気アプリ作成 & AWS Amptifyでデプロイ
+React & Tailwind CSSでお天気アプリ作成 & AWS Amptifyデプロイ
 
 ## デプロイ
 
-[AWS Amplify](https://main.d3jl0mcyte1y3l.amplifyapp.com)
+料金がかかるので停止
+
+~~ AWS Amplify https://main.d3jl0mcyte1y3l.amplifyapp.com ~~
 
 
 ## 参考記事
